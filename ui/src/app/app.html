@@ -1,0 +1,38 @@
+<main class="page">
+  <section class="chat-shell">
+    <header>
+      <h1>{{ title() }}</h1>
+      <p>Connected to <code>POST /api/chat</code></p>
+    </header>
+
+    <div class="messages">
+      @for (item of conversation(); track $index) {
+        <article class="message" [class.user]="item.role === 'user'">
+          <p class="role">{{ item.role === 'user' ? 'You' : 'Assistant' }}</p>
+          @if (item.role === 'assistant') {
+            <div class="assistant-content" [innerHTML]="item.html"></div>
+          } @else {
+            <p class="plain-text">{{ item.text }}</p>
+          }
+        </article>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <form class="composer" (ngSubmit)="sendMessage()">
+      <textarea
+        [(ngModel)]="message"
+        name="message"
+        rows="3"
+        placeholder="Type your message..."
+        [disabled]="loading()"
+      ></textarea>
+      <button type="submit" [disabled]="loading() || !message.trim()">
+        {{ loading() ? 'Sending...' : 'Send' }}
+      </button>
+    </form>
+  </section>
+</main>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 18px Arial, sans-serif; fill: #334155; }
+      .boxTitle { font: 700 18px Arial, sans-serif; fill: #0f172a; }
+      .boxText { font: 500 14px Arial, sans-serif; fill: #1e293b; }
+      .small { font: 500 12px Arial, sans-serif; fill: #334155; }
+      .label { font: 600 14px Arial, sans-serif; fill: #0f172a; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="900" fill="#f8fafc"/>
+  <text x="40" y="55" class="title">How to Feed Knowledge Files into RAG (Current Project)</text>
+  <text x="40" y="85" class="subtitle">Practical pipeline for adding docs, embedding them, and storing vectors in pgvector</text>
+
+  <rect x="50" y="130" rx="10" ry="10" width="300" height="180" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="70" y="165" class="boxTitle">Step 1: Prepare Files</text>
+  <text x="70" y="190" class="boxText">Create markdown docs (.md)</text>
+  <text x="70" y="212" class="boxText">Use clear headings and sections</text>
+  <text x="70" y="234" class="boxText">One topic per file is best</text>
+  <text x="70" y="262" class="small">Example:</text>
+  <text x="70" y="282" class="small">product-overview.md</text>
+
+  <rect x="400" y="130" rx="10" ry="10" width="380" height="180" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+  <text x="420" y="165" class="boxTitle">Step 2: Put Files in Knowledge Folder</text>
+  <text x="420" y="190" class="boxText">Path scanned by loader:</text>
+  <text x="420" y="214" class="boxText">src/main/resources/knowledge/*.md</text>
+  <text x="420" y="242" class="small">Only .md files are picked up in current implementation</text>
+
+  <rect x="830" y="130" rx="10" ry="10" width="300" height="180" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="850" y="165" class="boxTitle">Step 3: Restart Backend</text>
+  <text x="850" y="190" class="boxText">Run Spring Boot app</text>
+  <text x="850" y="212" class="boxText">KnowledgeLoader runs at startup</text>
+  <text x="850" y="234" class="boxText">(ApplicationRunner)</text>
+
+  <rect x="1180" y="130" rx="10" ry="10" width="180" height="180" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="1198" y="165" class="boxTitle">Step 4</text>
+  <text x="1198" y="190" class="boxText">Loader reads</text>
+  <text x="1198" y="212" class="boxText">each markdown</text>
+  <text x="1198" y="234" class="boxText">as Document</text>
+
+  <rect x="130" y="390" rx="10" ry="10" width="520" height="250" fill="#fae8ff" stroke="#9333ea" stroke-width="2"/>
+  <text x="150" y="425" class="boxTitle">Step 5: Inside KnowledgeLoader</text>
+  <text x="150" y="450" class="boxText">1) Find resources: classpath:/knowledge/*.md</text>
+  <text x="150" y="472" class="boxText">2) For each file, set metadata source=filename</text>
+  <text x="150" y="494" class="boxText">3) Delete older vectors for same source</text>
+  <text x="150" y="516" class="boxText">4) Build Document(content, metadata)</text>
+  <text x="150" y="538" class="boxText">5) vectorStore.add(documents)</text>
+  <text x="150" y="566" class="small">Current behavior: one Document per file (no explicit chunking)</text>
+
+  <rect x="730" y="390" rx="10" ry="10" width="300" height="250" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="750" y="425" class="boxTitle">Step 6: Embedding + Storage</text>
+  <text x="750" y="450" class="boxText">Embedding model:</text>
+  <text x="750" y="472" class="boxText">nomic-embed-text</text>
+  <text x="750" y="500" class="boxText">Vector DB:</text>
+  <text x="750" y="522" class="boxText">PostgreSQL pgvector</text>
+  <text x="750" y="550" class="boxText">dimensions: 768</text>
+
+  <rect x="1080" y="390" rx="10" ry="10" width="280" height="250" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="1100" y="425" class="boxTitle">Step 7: Verify</text>
+  <text x="1100" y="450" class="boxText">App startup logs show files loaded</text>
+  <text x="1100" y="472" class="boxText">Check vector row count in DB</text>
+  <text x="1100" y="494" class="boxText">Then ask chat questions</text>
+  <text x="1100" y="516" class="boxText">related to added files</text>
+
+  <rect x="50" y="700" rx="10" ry="10" width="1310" height="150" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+  <text x="70" y="735" class="boxTitle">Best Practices for Better Retrieval Quality</text>
+  <text x="70" y="760" class="boxText">- Keep files focused (single topic), add clear headings, and avoid very long unstructured text blocks.</text>
+  <text x="70" y="782" class="boxText">- For large documents, implement chunking (for example 500-1000 token chunks with overlap).</text>
+  <text x="70" y="804" class="boxText">- Include metadata (source, section, tags) so future filtering and troubleshooting are easier.</text>
+
+  <line x1="350" y1="220" x2="400" y2="220" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="780" y1="220" x2="830" y2="220" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1130" y1="220" x2="1180" y2="220" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1270" y1="310" x2="1270" y2="390" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1180" y1="520" x2="1030" y2="520" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="730" y1="520" x2="650" y2="520" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <text x="1140" y="360" class="label">Vectors saved</text>
+  <text x="950" y="508" class="label">Verify DB</text>
+  <text x="665" y="508" class="label">Embed docs</text>
+</svg>
+
